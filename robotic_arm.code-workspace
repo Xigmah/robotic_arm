@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		// CMake defaults for all folders
+		"cmake.sourceDirectory": "${workspaceFolder}",
+		"cmake.buildDirectory": "${workspaceFolder}/build",
+	}
+}
