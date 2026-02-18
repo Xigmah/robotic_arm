@@ -60,7 +60,7 @@ double Matrix4x4::get(size_t row, size_t col) const {
     throw std::out_of_range("Invalid matrix index");
   }
   return m[row][col];
-};
+}
 
 // Element Setter
 void Matrix4x4::set(size_t row, size_t col, double value) {
@@ -68,7 +68,7 @@ void Matrix4x4::set(size_t row, size_t col, double value) {
     throw std::out_of_range("Invalid matrix index");
   }
   m[row][col] = value;
-};
+}
 
 // Matrix printer, if needed for debugging
 void Matrix4x4::print() const {
@@ -81,8 +81,16 @@ void Matrix4x4::print() const {
     printf("|\n");
   }
   printf("\n");
-};
+}
 
+/* Creates Translation Matrix
+ * ┌             ┐
+ * │ 1  0  0  Tx │
+ * │ 0  1  0  Ty │
+ * │ 0  0  1  Tz │
+ * │ 0  0  0  1  │
+ * └             ┘
+ */
 Matrix4x4 Matrix4x4::translation(double tran_x, double tran_y, double tran_z) {
   Matrix4x4 result;  // Starts as identity
 
@@ -93,6 +101,14 @@ Matrix4x4 Matrix4x4::translation(double tran_x, double tran_y, double tran_z) {
   return result;
 }
 
+/* Creates Matrix for Rx
+ * ┌                      ┐
+ * │ 1    0       0     0 │
+ * │ 0  cos(θ) -sin(θ)  0 │
+ * │ 0  sin(θ)  cos(θ)  0 │
+ * │ 0    0       0     1 │
+ * └                      ┘
+ */
 Matrix4x4 Matrix4x4::rotationX(double angle_rad) {
   Matrix4x4 result;  // Starts as identity
 
@@ -104,6 +120,14 @@ Matrix4x4 Matrix4x4::rotationX(double angle_rad) {
   return result;
 }
 
+/* Creates Matrix for Ry
+ * ┌                       ┐
+ * │  cos(θ)  0  sin(θ)  0 │
+ * │    0     1    0     0 │
+ * │ -sin(θ)  0  cos(θ)  0 │
+ * │    0     0    0     1 │
+ * └                       ┘
+ */
 Matrix4x4 Matrix4x4::rotationY(double angle_rad) {
   Matrix4x4 result;  // Starts as identity
 
@@ -115,6 +139,14 @@ Matrix4x4 Matrix4x4::rotationY(double angle_rad) {
   return result;
 }
 
+/* Creates Matrix for Rz
+ * ┌                       ┐
+ * │ cos(θ) -sin(θ)  0   0 │
+ * │ sin(θ)  cos(θ)  0   0 │
+ * │   0       0     1   0 │
+ * │   0       0     0   1 │
+ * └                       ┘
+ */
 Matrix4x4 Matrix4x4::rotationZ(double angle_rad) {
   Matrix4x4 result;  // Starts as identity
 

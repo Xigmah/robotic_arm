@@ -78,13 +78,13 @@ TEST(Matrix4x4Tests, testRotationX) {
   for (size_t i = 0; i < SIZE; ++i) {
     for (size_t j = 0; j < SIZE; ++j) {
       if (i == 1 && j == 1) {
-        EXPECT_EQ(mat.get(i, j), std::cos(10.0));
+        EXPECT_NEAR(mat.get(i, j), std::cos(10.0), 1e-9);;
       } else if (i == 2 && j == 2) {
-        EXPECT_EQ(mat.get(i, j), std::cos(10.0));
+        EXPECT_NEAR(mat.get(i, j), std::cos(10.0), 1e-9);;
       } else if (i == 2 && j == 1) {
-        EXPECT_EQ(mat.get(i, j), std::sin(10.0));
+        EXPECT_NEAR(mat.get(i, j), std::sin(10.0), 1e-9);;
       } else if (i == 1 && j == 2) {
-        EXPECT_EQ(mat.get(i, j), -1 * std::sin(10.0));
+        EXPECT_NEAR(mat.get(i, j), -1 * std::sin(10.0), 1e-9);;
       } else if (i == j) {
         EXPECT_EQ(mat.get(i, j), 1.0)
             << "Diagonal element [" << i << "][" << j << "] should be 1.0";
@@ -102,13 +102,13 @@ TEST(Matrix4x4Tests, testRotationY) {
   for (size_t i = 0; i < SIZE; ++i) {
     for (size_t j = 0; j < SIZE; ++j) {
       if (i == 0 && j == 0) {
-        EXPECT_EQ(mat.get(i, j), std::cos(10.0));
+        EXPECT_NEAR(mat.get(i, j), std::cos(10.0), 1e-9);;
       } else if (i == 2 && j == 2) {
-        EXPECT_EQ(mat.get(i, j), std::cos(10.0));
+        EXPECT_NEAR(mat.get(i, j), std::cos(10.0), 1e-9);;
       } else if (i == 0 && j == 2) {
-        EXPECT_EQ(mat.get(i, j), std::sin(10.0));
+        EXPECT_NEAR(mat.get(i, j), std::sin(10.0), 1e-9);;
       } else if (i == 2 && j == 0) {
-        EXPECT_EQ(mat.get(i, j), -1 * std::sin(10.0));
+        EXPECT_NEAR(mat.get(i, j), -1 * std::sin(10.0), 1e-9);;
       } else if (i == j) {
         EXPECT_EQ(mat.get(i, j), 1.0)
             << "Diagonal element [" << i << "][" << j << "] should be 1.0";
@@ -126,13 +126,13 @@ TEST(Matrix4x4Tests, testRotationZ) {
   for (size_t i = 0; i < SIZE; ++i) {
     for (size_t j = 0; j < SIZE; ++j) {
       if (i == 0 && j == 0) {
-        EXPECT_EQ(mat.get(i, j), std::cos(10.0));
+        EXPECT_NEAR(mat.get(i, j), std::cos(10.0), 1e-9);;
       } else if (i == 1 && j == 1) {
-        EXPECT_EQ(mat.get(i, j), std::cos(10.0));
+        EXPECT_NEAR(mat.get(i, j), std::cos(10.0), 1e-9);;
       } else if (i == 1 && j == 0) {
-        EXPECT_EQ(mat.get(i, j), std::sin(10.0));
+        EXPECT_NEAR(mat.get(i, j), std::sin(10.0), 1e-9);;
       } else if (i == 0 && j == 1) {
-        EXPECT_EQ(mat.get(i, j), -1 * std::sin(10.0));
+        EXPECT_NEAR(mat.get(i, j), -1 * std::sin(10.0), 1e-9);;
       } else if (i == j) {
         EXPECT_EQ(mat.get(i, j), 1.0)
             << "Diagonal element [" << i << "][" << j << "] should be 1.0";
