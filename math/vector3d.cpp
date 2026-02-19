@@ -10,6 +10,8 @@
 
 #include "vector3d.h"
 
+#include <cmath>
+
 namespace arm {
 namespace math {
 

@@ -23,5 +23,5 @@ target_link_libraries(
 
 # Integrate with CTest (auto-discovers all TEST cases)
 include(GoogleTest)
-# gtest_discover_tests(vector3d_test)
+gtest_discover_tests(vector3d_test)
 gtest_discover_tests(matrix4x4_test)

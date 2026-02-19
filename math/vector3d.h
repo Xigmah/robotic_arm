@@ -9,8 +9,6 @@
  */
 #pragma once
 
-#include "math_util.h"
-
 namespace arm {
 namespace math {
 

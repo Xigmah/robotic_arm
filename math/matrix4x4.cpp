@@ -10,8 +10,6 @@
 
 #include "matrix4x4.h"
 
-#include <cmath>
-#include <iomanip>
 #include <iostream>
 
 /*
@@ -94,9 +92,9 @@ void Matrix4x4::print() const {
 Matrix4x4 Matrix4x4::translation(double tran_x, double tran_y, double tran_z) {
   Matrix4x4 result;  // Starts as identity
 
-  result.set(0, 3, tran_x);
-  result.set(1, 3, tran_y);
-  result.set(2, 3, tran_z);
+  result.set(T_X, T_COL, tran_x);
+  result.set(T_Y, T_COL, tran_y);
+  result.set(T_Z, T_COL, tran_z);
 
   return result;
 }
@@ -113,7 +111,7 @@ Matrix4x4 Matrix4x4::rotationX(double angle_rad) {
   Matrix4x4 result;  // Starts as identity
 
   result.set(1, 1, std::cos(angle_rad));
-  result.set(1, 2, -1*std::sin(angle_rad));
+  result.set(1, 2, -1 * std::sin(angle_rad));
   result.set(2, 1, std::sin(angle_rad));
   result.set(2, 2, std::cos(angle_rad));
 
@@ -133,7 +131,7 @@ Matrix4x4 Matrix4x4::rotationY(double angle_rad) {
 
   result.set(0, 0, std::cos(angle_rad));
   result.set(0, 2, std::sin(angle_rad));
-  result.set(2, 0, -1*std::sin(angle_rad));
+  result.set(2, 0, -1 * std::sin(angle_rad));
   result.set(2, 2, std::cos(angle_rad));
 
   return result;
@@ -151,12 +149,66 @@ Matrix4x4 Matrix4x4::rotationZ(double angle_rad) {
   Matrix4x4 result;  // Starts as identity
 
   result.set(0, 0, std::cos(angle_rad));
-  result.set(0, 1, -1*std::sin(angle_rad));
+  result.set(0, 1, -1 * std::sin(angle_rad));
   result.set(1, 0, std::sin(angle_rad));
   result.set(1, 1, std::cos(angle_rad));
 
   return result;
 }
+
+// Matrix Multiplication
+Matrix4x4 Matrix4x4::operator*(const Matrix4x4& other) const {
+  Matrix4x4 result;
+  for (size_t row{0}; row < SIZE; row++) {
+    for (size_t col{0}; col < SIZE; col++) {
+      // Prepare summation before loop
+      double sum{0};
+
+      //           n-1
+      // C[i][j] = ∑ A[i][k] * B[k][j]
+      //           k=0
+      for (size_t sum_enum{0}; sum_enum < SIZE; sum_enum++) {
+        sum += (this->get(row, sum_enum) * other.get(sum_enum, col));
+      }
+
+      // Apply summation
+      result.set(row, col, sum);
+    }
+  }
+  return result;
+};
+
+// Chain Multiplication
+Matrix4x4& Matrix4x4::operator*=(const Matrix4x4& other) {
+  Matrix4x4 temp = *this * other;
+  *this = std::move(temp);
+  return *this;
+}
+
+// Comparison
+bool Matrix4x4::equals(const Matrix4x4& other, double tolerance) const {
+  // If the matrix is exactly the same, return true
+  if (this == &other) {
+    return true;
+  }
+
+  // Otherwise, check all the elements with tolerance
+  for (size_t i{0}; i < SIZE; i++) {
+    for (size_t j{0}; j < SIZE; j++) {
+      // If difference in elements are larger than tolerance, 
+      //  return false
+      if (std::abs(this->get(i, j) - other.get(i, j)) > tolerance) {
+        return false;
+      }
+    }
+  }
+  return true;
+};
+
+// Creates Vector from translation coordinates of matrix
+Vector3D Matrix4x4::getTranslation() const {
+  return Vector3D{m[T_X][T_COL], m[T_Y][T_COL], m[T_Z][T_COL]};
+};
 
 }  // namespace math
 }  // namespace arm

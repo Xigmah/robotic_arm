@@ -10,6 +10,7 @@
 #pragma once
 
 #include <array>
+#include <cmath>
 
 #include "vector3d.h"
 
@@ -19,6 +20,12 @@ namespace math {
 class Matrix4x4 {
  private:
   static constexpr size_t SIZE = 4;
+
+  // Translation coordinates
+  static constexpr size_t T_COL = 3;
+  static constexpr size_t T_X = 0;
+  static constexpr size_t T_Y = 1;
+  static constexpr size_t T_Z = 2;
 
  protected:
   std::array<std::array<double, SIZE>, SIZE> m;  // 4x4 array
@@ -37,7 +44,8 @@ class Matrix4x4 {
   static Matrix4x4 rotationZ(double angle_rad);
 
   // Matrix operations
-  Matrix4x4 operator*(const Matrix4x4& other) const;  // Matrix multiplication
+  Matrix4x4 operator*(const Matrix4x4& other) const;
+  Matrix4x4& operator*=(const Matrix4x4& other);
 
   // Element access
   double get(size_t row, size_t col) const;
