@@ -1,6 +1,10 @@
-# ignore build files
-**/build
-**/out
+# Ignore build directories
+build/
+dist/
+out/
 
-# ignore vscode files
+# Ignore vscode directories
 ./vscode
+
+# Ignore testing directories
+Testing/
