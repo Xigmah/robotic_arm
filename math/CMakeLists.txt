@@ -1,9 +1,22 @@
-add_library(vector3d
-    vector3d.cpp
+add_library(math)
+
+target_sources(math
+    PRIVATE
+        # main.cpp
+        vector3d.cpp
+        matrix4x4.cpp
+    PUBLIC
+        FILE_SET HEADERS
+        BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
+        FILES
+            vector3d.h
+            matrix4x4.h
+            math_util.h
 )
-target_include_directories(vector3d
+
+target_include_directories(math
     PUBLIC 
-    ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 add_subdirectory(test)

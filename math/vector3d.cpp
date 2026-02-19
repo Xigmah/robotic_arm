@@ -10,6 +10,8 @@
 
 #include "vector3d.h"
 
+#include <cmath>
+
 namespace arm {
 namespace math {
 
@@ -51,15 +53,11 @@ Vector3D Vector3D::normalized() const {
 
 // Dot product
 double Vector3D::dot(const Vector3D& other) const {
-  // TODO: Implement this
-  // Hint: x1*x2 + y1*y2 + z1*z2
   return (x * other.x + y * other.y + z * other.z);
 }
 
 // Equality with tolerance (important for floating point!)
 bool Vector3D::equals(const Vector3D& other, double tolerance) const {
-  // TODO: Implement this
-  // Hint: Check if distance is less than tolerance
   return distance(other) < tolerance;
 }
 
