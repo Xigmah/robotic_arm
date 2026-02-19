@@ -5,6 +5,7 @@ target_sources(math
         # main.cpp
         vector3d.cpp
         matrix4x4.cpp
+        transform.cpp
     PUBLIC
         FILE_SET HEADERS
         BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
@@ -12,6 +13,7 @@ target_sources(math
             vector3d.h
             matrix4x4.h
             math_util.h
+            transform.h
 )
 
 target_include_directories(math
