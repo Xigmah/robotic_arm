@@ -5,3 +5,6 @@ out/
 
 # Ignore vscode directories
 ./vscode
+
+# Ignore testing directories
+Testing/
