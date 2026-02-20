@@ -10,7 +10,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 enable_testing()
 
 # Directories
-# add_subdirectory(arm_controller)
+add_subdirectory(hardware)
 # add_subdirectory(application_layer)
 # add_subdirectory(kinematics)
 add_subdirectory(math)

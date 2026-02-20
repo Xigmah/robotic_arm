@@ -2,8 +2,6 @@
 
 #include <gtest/gtest.h>
 
-#include <cstring>
-
 using namespace arm::math;
 
 static constexpr size_t SIZE = 4;

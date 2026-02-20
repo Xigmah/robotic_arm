@@ -2,8 +2,6 @@
 
 #include <gtest/gtest.h>
 
-#include <cstring>
-
 using namespace arm::math;
 
 TEST(Vector3DTests, testConstructor) {
