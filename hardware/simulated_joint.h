@@ -16,6 +16,7 @@ namespace hardware {
 class SimulatedJoint : public Joint {
  public:
   SimulatedJoint(double min, double max, double length);
+  ~SimulatedJoint() = default;
 
   void setTargetAngle(double angle_rad) override;
   double getCurrentAngle() const override { return current_angle; }

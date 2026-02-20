@@ -22,6 +22,7 @@ class ArmConfig {
 
  public:
   ArmConfig() = default;
+  ~ArmConfig() = default;
 
   // Build configuration
   void addJoint(std::unique_ptr<Joint> joint);
