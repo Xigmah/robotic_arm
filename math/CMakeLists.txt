@@ -2,7 +2,6 @@ add_library(math)
 
 target_sources(math
     PRIVATE
-        # main.cpp
         vector3d.cpp
         matrix4x4.cpp
         transform.cpp
