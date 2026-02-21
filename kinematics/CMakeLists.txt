@@ -15,4 +15,11 @@ target_include_directories(kinematics
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
+# Link against dependencies
+target_link_libraries(kinematics
+    PUBLIC
+        hardware
+        math
+)
+
 add_subdirectory(test)
