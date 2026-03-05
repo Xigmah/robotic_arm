@@ -3,11 +3,16 @@ add_library(kinematics)
 target_sources(kinematics
     PRIVATE
         kinematic_chain.cpp
+        inverse_kinematics.cpp
+        analytical_ik.cpp
     PUBLIC
         FILE_SET HEADERS
         BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
         FILES
             kinematic_chain.h
+            inverse_kinematics.h
+            analytical_ik.h
+
 )
 
 target_include_directories(kinematics
