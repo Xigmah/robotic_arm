@@ -14,12 +14,12 @@ class AnalyticIKTest : public ::testing::Test {
   ArmConfig config;
 
   void SetUp() override {
-    config.addJoint(
-        JointFactory::create(JointType::SIMULATED, -M_PI, M_PI, 100));
-    config.addJoint(
-        JointFactory::create(JointType::SIMULATED, -M_PI_2, M_PI_2, 80));
-    config.addJoint(
-        JointFactory::create(JointType::SIMULATED, -M_PI_2, M_PI_2, 60));
+    config.addJoint(JointFactory::create(JointType::SIMULATED, -M_PI, M_PI, 100,
+                                         RotAxis::Z));
+    config.addJoint(JointFactory::create(JointType::SIMULATED, -M_PI_2, M_PI_2,
+                                         80, RotAxis::Y));
+    config.addJoint(JointFactory::create(JointType::SIMULATED, -M_PI_2, M_PI_2,
+                                         60, RotAxis::Y));
   }
 };
 
@@ -34,7 +34,7 @@ TEST_F(AnalyticIKTest, Solve_VerifyWithFK_AlongXAxis) {
   ASSERT_TRUE(angles.has_value());
 
   chain.setAllJointAngles(*angles);
-  auto result = chain.computeForwardKinematics();
+  auto result = chain.computFKTranslation();
 
   EXPECT_NEAR(result.get_x(), target.get_x(), 1e-3);
   EXPECT_NEAR(result.get_y(), target.get_y(), 1e-3);
@@ -51,7 +51,7 @@ TEST_F(AnalyticIKTest, Solve_VerifyWithFK_Diagonal) {
   ASSERT_TRUE(angles.has_value());
 
   chain.setAllJointAngles(*angles);
-  auto result = chain.computeForwardKinematics();
+  auto result = chain.computFKTranslation();
 
   EXPECT_NEAR(result.get_x(), target.get_x(), 1e-3);
   EXPECT_NEAR(result.get_y(), target.get_y(), 1e-3);
@@ -68,7 +68,7 @@ TEST_F(AnalyticIKTest, Solve_VerifyWithFK_WithHeight) {
   ASSERT_TRUE(angles.has_value());
 
   chain.setAllJointAngles(*angles);
-  auto result = chain.computeForwardKinematics();
+  auto result = chain.computFKTranslation();
 
   EXPECT_NEAR(result.get_x(), target.get_x(), 1e-3);
   EXPECT_NEAR(result.get_y(), target.get_y(), 1e-3);
@@ -85,7 +85,7 @@ TEST_F(AnalyticIKTest, Solve_VerifyWithFK_NegativeZ) {
   ASSERT_TRUE(angles.has_value());
 
   chain.setAllJointAngles(*angles);
-  auto result = chain.computeForwardKinematics();
+  auto result = chain.computFKTranslation();
 
   EXPECT_NEAR(result.get_x(), target.get_x(), 1e-3);
   EXPECT_NEAR(result.get_y(), target.get_y(), 1e-3);
@@ -103,7 +103,7 @@ TEST_F(AnalyticIKTest, Solve_MaxReach) {
   ASSERT_TRUE(angles.has_value());
 
   chain.setAllJointAngles(*angles);
-  auto result = chain.computeForwardKinematics();
+  auto result = chain.computFKTranslation();
 
   EXPECT_NEAR(result.get_x(), target.get_x(), 1e-3);
 }
@@ -137,7 +137,7 @@ TEST_F(AnalyticIKTest, Solve_MinimumReach) {
   auto angles = ik.solve(target);
   if (angles.has_value()) {
     chain.setAllJointAngles(*angles);
-    auto result = chain.computeForwardKinematics();
+    auto result = chain.computFKTranslation();
 
     EXPECT_NEAR(result.get_x(), target.get_x(), 1e-3);
   }
@@ -162,7 +162,7 @@ TEST_F(AnalyticIKTest, Solve_AllQuadrants) {
         << ", " << target.get_z() << ")";
 
     chain.setAllJointAngles(*angles);
-    auto result = chain.computeForwardKinematics();
+    auto result = chain.computFKTranslation();
 
     EXPECT_NEAR(result.get_x(), target.get_x(), 1e-3);
     EXPECT_NEAR(result.get_y(), target.get_y(), 1e-3);

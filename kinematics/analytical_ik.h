@@ -11,6 +11,7 @@
 #pragma once
 
 #include "inverse_kinematics.h"
+#include "kinematics_util.h"
 
 namespace arm {
 namespace kinematics {
@@ -18,13 +19,6 @@ namespace kinematics {
 // Analytical IK solver for 3-DOF RRR arm (Z-Y-Y configuration)
 class AnalyticIK3DOF : public InverseKinematics {
  private:
-  enum Joint { BASE = 0, SHOUL = 1, ELB = 2 };
-
-  struct ShoulderElbowAngles {
-    double shoulder;  // θ1
-    double elbow;     // θ2
-  };
-
   std::optional<ShoulderElbowAngles> solve2DArm(
       double r,                 // horizontal distance
       double z,                 // vertical distance

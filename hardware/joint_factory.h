@@ -26,6 +26,7 @@ class JointFactory {
  public:
   static std::unique_ptr<Joint> create(
       JointType type, double min_limit, double max_limit, double link_length,
+      RotAxis axis,
       int hardware_id = 0  // GPIO pin, EtherCAT slave ID, etc.
   );
 };

@@ -11,6 +11,7 @@
 #include "../hardware/arm_config.h"
 #include "../math/transform.h"
 #include "../math/vector3d.h"
+#include "kinematics_util.h"
 
 namespace arm {
 namespace kinematics {
@@ -24,7 +25,9 @@ class KinematicChain {
   ~KinematicChain() = default;
 
   // Compute end effector position from current joint angles
-  math::Vector3D computeForwardKinematics() const;
+  math::Vector3D computFKTranslation() const;
+  math::Vector3D computFKTranslation(const hardware::ArmConfig& config) const;
+  ChainState computeForwardKinematics(const hardware::ArmConfig& config) const;
 
   // Convenience (delegates to hardware)
   size_t getNumJoints() const;

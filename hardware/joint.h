@@ -13,21 +13,25 @@
 namespace arm {
 namespace hardware {
 
+enum class RotAxis { X, Y, Z };
+
 class Joint {
  private:
   static constexpr double def_min_limit = 0.0;     // rad
   static constexpr double def_max_limit = M_2_PI;  // rad
   static constexpr double def_link_length = 10.0;  // mm
+  static constexpr RotAxis def_rot = RotAxis::Y;
 
  protected:
-  double current_angle; // rad
-  double min_limit;     // rad
-  double max_limit;     // rad
-  double link_length;   // mm
+  double current_angle;  // rad
+  double min_limit;      // rad
+  double max_limit;      // rad
+  double link_length;    // mm
+  RotAxis rot_axis;      // Axis of rotation for joint
 
  public:
   Joint(double min = def_min_limit, double max = def_max_limit,
-        double length = def_link_length);
+        double length = def_link_length, RotAxis rot = def_rot);
   virtual ~Joint() = default;
 
   // Pure virtual - subclasses must implement
@@ -41,6 +45,7 @@ class Joint {
   double getMinLimit() const { return min_limit; }
   double getMaxLimit() const { return max_limit; }
   double getLinkLength() const { return link_length; }
+  RotAxis getRotAxis() const { return rot_axis; }
 };
 
 }  // namespace hardware

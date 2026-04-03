@@ -7,6 +7,7 @@
  *       Wrapper used for matrix math
  */
 
+#include <stdexcept>
 #include "transform.h"
 
 namespace arm {
@@ -63,6 +64,13 @@ Transform& Transform::operator*=(const Transform& other) {
 
 bool Transform::equals(const Transform& other, double tolerance) const {
   return matrix.equals(other.matrix, tolerance);
+}
+
+std::array<double, 3> Transform::getRotColumn(size_t idx) const {
+  if (idx > 2){
+    throw std::out_of_range("Selected column index out of range");
+  }
+  return std::array<double, 3>{matrix.get(0, idx), matrix.get(1, idx), matrix.get(2, idx)};
 }
 
 }  // namespace math

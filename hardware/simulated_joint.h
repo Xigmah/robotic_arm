@@ -15,7 +15,7 @@ namespace hardware {
 
 class SimulatedJoint : public Joint {
  public:
-  SimulatedJoint(double min, double max, double length);
+  SimulatedJoint(double min, double max, double length, RotAxis axis);
   ~SimulatedJoint() = default;
 
   void setTargetAngle(double angle_rad) override;

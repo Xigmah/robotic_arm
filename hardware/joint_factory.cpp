@@ -26,12 +26,12 @@ namespace hardware {
  */
 std::unique_ptr<Joint> JointFactory::create(JointType type, double min_limit,
                                             double max_limit,
-                                            double link_length,
+                                            double link_length, RotAxis axis,
                                             int hardware_id) {
   switch (type) {
     case JointType::SIMULATED:
-      return std::make_unique<SimulatedJoint>(min_limit, max_limit,
-                                              link_length);
+      return std::make_unique<SimulatedJoint>(min_limit, max_limit, link_length,
+                                              axis);
 
       // Future:
       // case JointType::ES08A_SERVO:

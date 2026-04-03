@@ -29,6 +29,9 @@ class ArmConfig {
 
   // Queries
   size_t getNumJoints() const { return joints.size(); }
+  RotAxis getJointRotAxis(size_t index) const {
+    return joints[index]->getRotAxis();
+  };
   Joint* getJoint(size_t index) const;
 
   double getLinkLength(size_t index) const;

@@ -20,8 +20,9 @@ namespace hardware {
  * max -> rad
  * length -> mm
  */
-SimulatedJoint::SimulatedJoint(double min, double max, double length)
-    : Joint(min, max, length) {}
+SimulatedJoint::SimulatedJoint(double min, double max, double length,
+                               RotAxis axis)
+    : Joint(min, max, length, axis) {}
 
 /* Set Target to travel to
  * angle -> rad

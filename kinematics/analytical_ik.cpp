@@ -25,7 +25,7 @@ double AnalyticIK3DOF::solveBaseAngle(double x, double y) const {
   return atan2(y, x);
 }
 
-optional<AnalyticIK3DOF::ShoulderElbowAngles> AnalyticIK3DOF::solve2DArm(
+optional<ShoulderElbowAngles> AnalyticIK3DOF::solve2DArm(
     double r, double z, double L_shoul, double L_elb, bool arm_bend_pos) const {
   // s -> shoulder, e -> elbow
   /*

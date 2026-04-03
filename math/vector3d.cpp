@@ -42,6 +42,19 @@ double Vector3D::distance(const Vector3D& other) const {
   return temp.magnitude();
 }
 
+// Cross product
+Vector3D Vector3D::cross(const Vector3D& other) const {
+  /*
+   * a × b = (a.y*b.z - a.z*b.y,
+   *          a.z*b.x - a.x*b.z,
+   *          a.x*b.y - a.y*b.x)
+   */
+  Vector3D temp{this->y * other.z - this->z * other.y,
+                this->z * other.x - this->x * other.z,
+                this->x * other.y - this->y * other.x};
+  return temp;
+}
+
 // Normalize (unit vector)
 Vector3D Vector3D::normalized() const {
   double mag = magnitude();

@@ -19,8 +19,8 @@ namespace hardware {
  * length -> mm
  * Default angle is in middle of range
  */
-Joint::Joint(double min, double max, double length)
-    : min_limit{min}, max_limit{max}, link_length{length} {
+Joint::Joint(double min, double max, double length, RotAxis rot_axis)
+    : min_limit{min}, max_limit{max}, link_length{length}, rot_axis{rot_axis} {
   current_angle = (max_limit + min_limit) / 2;  // Middle of range
 }
 

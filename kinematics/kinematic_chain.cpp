@@ -9,6 +9,8 @@
  */
 #include "kinematic_chain.h"
 
+#include <stdexcept>
+
 namespace arm {
 namespace kinematics {
 
@@ -28,31 +30,68 @@ KinematicChain::KinematicChain(hardware::ArmConfig& config)
  * Where each `T_i` is:
  * T_i = Rotation(axis, angle) * Translation(link_length, 0, 0)
  */
-math::Vector3D KinematicChain::computeForwardKinematics() const {
-  // Joint indices
-  size_t j0{0};
-  size_t j1{1};
-  size_t j2{2};
-
+ChainState KinematicChain::computeForwardKinematics(
+    const hardware::ArmConfig& config) const {
   math::Transform T;
+
+  ChainState JointFrames;
 
   /* Each transform takes original matrix, and multiplies by
    * requested transformation, therefore each rotation/translation
    * can be applied to the same Transform matrix
    */
-  // Joint 0 - Base Rotation
-  T.rotateZ(arm_config.getJointAngle(j0))
-      .translate(arm_config.getLinkLength(j0), 0.0, 0.0);
+  for (size_t idx{0}; idx < config.getNumJoints(); idx++) {
+    // First, get joint frame data
+    std::array<double, 3> joint_axis{0, 0, 0};
+    switch (config.getJointRotAxis(idx)) {
+      case hardware::RotAxis::X:
+        joint_axis = T.getRotColumn(0);
+        break;
+      case hardware::RotAxis::Y:
+        joint_axis = T.getRotColumn(1);
+        break;
+      case hardware::RotAxis::Z:
+        joint_axis = T.getRotColumn(2);
+        break;
+      default:
+        throw std::runtime_error("Unkown joint rotation");
+    }
 
-  // Joint 1 - Shoulder
-  T.rotateY(arm_config.getJointAngle(j1))
-      .translate(arm_config.getLinkLength(j1), 0.0, 0.0);
+    math::Vector3D T_trans{T.getTranslation()};
+    JointFrame frame{T_trans.get_x(), T_trans.get_y(), T_trans.get_z(),
+                     joint_axis};
+    JointFrames.joint_frames.push_back(frame);
 
-  // Joint 2 - Elbow
-  T.rotateY(arm_config.getJointAngle(j2))
-      .translate(arm_config.getLinkLength(j2), 0.0, 0.0);
+    // Then, do rotations and translations
+    switch (config.getJointRotAxis(idx)) {
+      case hardware::RotAxis::X:
+        T.rotateX(config.getJointAngle(idx));
+        break;
+      case hardware::RotAxis::Y:
+        T.rotateY(config.getJointAngle(idx));
+        break;
+      case hardware::RotAxis::Z:
+        T.rotateZ(config.getJointAngle(idx));
+        break;
+      default:
+        throw std::runtime_error("Unkown joint rotation");
+    }
+    T.translate(config.getLinkLength(idx), 0.0, 0.0);
+  }
+  JointFrames.end_eff_vec = T.getTranslation();
 
-  return T.getTranslation();
+  return JointFrames;
+}
+
+math::Vector3D KinematicChain::computFKTranslation(
+    const hardware::ArmConfig& config) const {
+  ChainState temp{computeForwardKinematics(config)};
+  return temp.end_eff_vec;
+}
+
+// Overload to use default config
+math::Vector3D KinematicChain::computFKTranslation() const {
+  return computFKTranslation(arm_config);
 }
 
 // Convenience (delegates to hardware)

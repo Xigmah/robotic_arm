@@ -62,6 +62,17 @@ TEST(Vector3DTests, testDistance) {
   EXPECT_NEAR(dist, 5.0, 1e-6);
 }
 
+TEST(Vector3DTests, testCross) {
+  Vector3D v1(1, 0, 0);
+  Vector3D v2(0, 1, 0);
+  Vector3D product = v1.cross(v2);
+
+  // Resulting cross should be (0,0,1)
+  EXPECT_NEAR(product.get_x(), 0, 1e-6);
+  EXPECT_NEAR(product.get_y(), 0, 1e-6);
+  EXPECT_NEAR(product.get_z(), 1, 1e-6);
+}
+
 TEST(Vector3DTests, testNormalized) {
   Vector3D v(3, 4, 0);
   Vector3D unit = v.normalized();
