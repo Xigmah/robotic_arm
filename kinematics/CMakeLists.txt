@@ -5,6 +5,7 @@ target_sources(kinematics
         kinematic_chain.cpp
         inverse_kinematics.cpp
         analytical_ik.cpp
+        jacobian_ik.cpp
     PUBLIC
         FILE_SET HEADERS
         BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
@@ -12,6 +13,7 @@ target_sources(kinematics
             kinematic_chain.h
             inverse_kinematics.h
             analytical_ik.h
+            jacobian_ik.h
 
 )
 

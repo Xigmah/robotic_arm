@@ -14,6 +14,9 @@ namespace arm {
 namespace kinematics {
 
 class JacobianIK : public InverseKinematics {
+ private:
+  static constexpr double step_size{0.01};
+  static constexpr size_t max_iteration{100};
  protected:
  public:
   explicit JacobianIK(hardware::ArmConfig& config);

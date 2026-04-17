@@ -8,6 +8,7 @@
  *       forward kinematics
  */
 #pragma once
+
 #include "../hardware/arm_config.h"
 #include "../math/transform.h"
 #include "kinematics_util.h"

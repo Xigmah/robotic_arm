@@ -9,6 +9,7 @@
  */
 #pragma once
 #include <cmath>
+#include <memory>
 
 namespace arm {
 namespace hardware {
@@ -37,6 +38,7 @@ class Joint {
   // Pure virtual - subclasses must implement
   virtual void setTargetAngle(double angle_rad) = 0;
   virtual double getCurrentAngle() const = 0;
+  virtual std::unique_ptr<Joint> clone() const = 0;
 
   // Common functionality
   bool isWithinLimits(double angle_rad) const;

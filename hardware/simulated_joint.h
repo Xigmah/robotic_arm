@@ -20,6 +20,7 @@ class SimulatedJoint : public Joint {
 
   void setTargetAngle(double angle_rad) override;
   double getCurrentAngle() const override { return current_angle; }
+  std::unique_ptr<Joint> clone() const override;
 };
 
 }  // namespace hardware

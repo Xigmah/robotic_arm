@@ -39,5 +39,9 @@ void SimulatedJoint::setTargetAngle(double angle_rad) {
   }
 }
 
+std::unique_ptr<Joint> SimulatedJoint::clone() const {
+  return std::make_unique<SimulatedJoint>(*this);
+}
+
 }  // namespace hardware
 }  // namespace arm

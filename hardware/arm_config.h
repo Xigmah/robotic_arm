@@ -8,7 +8,6 @@
  */
 #pragma once
 
-#include <memory>
 #include <vector>
 
 #include "joint.h"
@@ -22,6 +21,7 @@ class ArmConfig {
 
  public:
   ArmConfig() = default;
+  ArmConfig(const ArmConfig& source);
   ~ArmConfig() = default;
 
   // Build configuration

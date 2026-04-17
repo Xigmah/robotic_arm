@@ -14,6 +14,13 @@
 namespace arm {
 namespace hardware {
 
+// Deep copy for ArmConfig
+ArmConfig::ArmConfig(const ArmConfig& source) {
+  for (const auto& joint_ptr : source.joints) {
+    joints.push_back(joint_ptr->clone());
+  }
+}
+
 // Add Joint
 void ArmConfig::addJoint(std::unique_ptr<Joint> joint) {
   joints.push_back(std::move(joint));
