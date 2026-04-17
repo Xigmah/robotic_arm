@@ -11,7 +11,6 @@
 #pragma once
 
 #include "inverse_kinematics.h"
-#include "kinematics_util.h"
 
 namespace arm {
 namespace kinematics {

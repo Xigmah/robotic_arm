@@ -9,6 +9,8 @@
  */
 #pragma once
 
+#include <array>
+
 namespace arm {
 namespace math {
 
@@ -27,9 +29,10 @@ class Vector3D {
   ~Vector3D() = default;
 
   // Operations
+  Vector3D operator*(double scalar) const;          // v * 2.0
   Vector3D operator+(const Vector3D& other) const;  // v1 + v2
   Vector3D operator-(const Vector3D& other) const;  // v1 - v2
-  Vector3D operator*(double scalar) const;          // v * 2.0
+  Vector3D& operator=(const std::array<double, 3>& values); 
 
   // Utility
   double magnitude() const;                      // Length of vector

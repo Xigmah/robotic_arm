@@ -18,6 +18,11 @@ namespace math {
 // Default constructor
 Vector3D::Vector3D(double x, double y, double z) : x(x), y(y), z(z) {}
 
+// Scalar multiplication
+Vector3D Vector3D::operator*(double scalar) const {
+return Vector3D{x * scalar, y * scalar, z * scalar};
+}
+
 // Addition
 Vector3D Vector3D::operator+(const Vector3D& other) const {
   return Vector3D{x + other.x, y + other.y, z + other.z};
@@ -28,9 +33,14 @@ Vector3D Vector3D::operator-(const Vector3D& other) const {
   return Vector3D{x - other.x, y - other.y, z - other.z};
 }
 
-// Scalar multiplication
-Vector3D Vector3D::operator*(double scalar) const {
-  return Vector3D{x * scalar, y * scalar, z * scalar};
+/* Equals Array
+ * This assumes values is an array of {x,y,z}
+ */
+Vector3D& Vector3D::operator=(const std::array<double, 3>& values) {
+  x = values[0];
+  y = values[1];
+  z = values[2];
+  return *this;
 }
 
 // Magnitude (length of vector)

@@ -10,7 +10,6 @@
 #pragma once
 #include "../hardware/arm_config.h"
 #include "../math/transform.h"
-#include "../math/vector3d.h"
 #include "kinematics_util.h"
 
 namespace arm {

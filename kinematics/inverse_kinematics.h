@@ -9,10 +9,9 @@
 #pragma once
 
 #include <optional>
-#include <vector>
 
 #include "../hardware/arm_config.h"
-#include "../math/vector3d.h"
+#include "kinematics_util.h"
 
 namespace arm {
 namespace kinematics {

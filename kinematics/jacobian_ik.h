@@ -9,7 +9,6 @@
 #pragma once
 
 #include "inverse_kinematics.h"
-#include "kinematic_chain.h"
 
 namespace arm {
 namespace kinematics {

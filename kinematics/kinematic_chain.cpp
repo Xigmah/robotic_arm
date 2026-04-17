@@ -42,7 +42,7 @@ ChainState KinematicChain::computeForwardKinematics(
    */
   for (size_t idx{0}; idx < config.getNumJoints(); idx++) {
     // First, get joint frame data
-    std::array<double, 3> joint_axis{0, 0, 0};
+    math::Vector3D joint_axis{0, 0, 0};
     switch (config.getJointRotAxis(idx)) {
       case hardware::RotAxis::X:
         joint_axis = T.getRotColumn(0);
@@ -57,9 +57,8 @@ ChainState KinematicChain::computeForwardKinematics(
         throw std::runtime_error("Unkown joint rotation");
     }
 
-    math::Vector3D T_trans{T.getTranslation()};
-    JointFrame frame{T_trans.get_x(), T_trans.get_y(), T_trans.get_z(),
-                     joint_axis};
+    // Store joint position and rotational axis prior to translation 
+    JointFrame frame{T.getTranslation(), joint_axis};
     JointFrames.joint_frames.push_back(frame);
 
     // Then, do rotations and translations

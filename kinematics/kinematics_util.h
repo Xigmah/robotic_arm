@@ -7,7 +7,8 @@
  */
 #pragma once
 
-#include <array>
+#include <vector>
+#include "../math/vector3d.h"
 
 namespace arm {
 namespace kinematics {
@@ -20,8 +21,7 @@ struct ShoulderElbowAngles {
 };
 
 struct JointFrame {
-  double x, y, z;
-  std::array<double, 3> axis;
+  math::Vector3D joint_pos, axis;
 };
 
 struct ChainState {
