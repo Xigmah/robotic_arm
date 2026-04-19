@@ -9,6 +9,10 @@
 
 #include "jacobian_ik.h"
 
+// #include <iostream>
+#include <algorithm>
+#include <stdexcept>
+
 #include "kinematic_chain.h"
 
 namespace arm {
@@ -17,11 +21,10 @@ namespace kinematics {
 JacobianIK::JacobianIK(hardware::ArmConfig& config)
     : InverseKinematics(config) {}
 
-
 std::optional<std::vector<double>> JacobianIK::solve(
     const math::Vector3D& target_position) const {
   // Initializing angles for return
-  std::vector<double> joint_angles;
+  std::vector<double> joint_angles{arm_config.getAllJointAngles()};
 
   // Initializing a copy of arm_config for use when looping
   hardware::ArmConfig temp{arm_config};
@@ -30,12 +33,14 @@ std::optional<std::vector<double>> JacobianIK::solve(
   // ChainState used for Jacobian comp
   ChainState joint_state{comp.computeForwardKinematics(temp)};
 
+  // Check joint_state.joint_frames vector is the same size as joint_angles
+  if (joint_state.joint_frames.size() != arm_config.getNumJoints()) {
+    throw std::out_of_range("Joint frames do not match number of joints");
+  }
+
   math::Vector3D end_eff_pos{joint_state.end_eff_vec};
   math::Vector3D error = target_position - end_eff_pos;  // vector
   double error_magnitude = error.magnitude();  // scalar for convergence check
-
-  // TODO: Tolerance hardcoded for initial testing, will be moved out
-  double tolerance = 10.0;
 
   // Set iteration counter, nullopt if max iterations reached
   size_t iteration{0};
@@ -44,7 +49,6 @@ std::optional<std::vector<double>> JacobianIK::solve(
     if (iteration >= max_iteration) {
       return std::nullopt;
     }
-    iteration++;
 
     /* Instantiate Jacobian,
      * Set jacobian back to empty in new while loop
@@ -73,14 +77,30 @@ std::optional<std::vector<double>> JacobianIK::solve(
     joint_angles = temp.getAllJointAngles();
     for (size_t i = 0; i < joint_angles.size(); i++) {
       joint_angles[i] += step_size * delta_theta[i];
+
+      // Clamp Angle
+      auto joint = arm_config.getJoint(i);
+      joint_angles[i] = std::clamp(joint_angles[i], joint->getMinLimit(),
+                                   joint->getMaxLimit());
+    }
+    // Perturb initial angles to avoid singularity
+    if (iteration == 0) {
+      joint_angles[1] = 0.1;  // small shoulder angle
     }
     temp.setAllJointAngles(joint_angles);
     joint_state = comp.computeForwardKinematics(temp);
     end_eff_pos = joint_state.end_eff_vec;
 
+    // Check joint_state.joint_frames vector size is same as number of joints
+    if (joint_state.joint_frames.size() != arm_config.getNumJoints()) {
+      throw std::out_of_range("Joint frames do not match number of joints");
+    }
+
     // Set new error
     error = target_position - joint_state.end_eff_vec;
     error_magnitude = error.magnitude();
+    // printf("error: %0.2f\n", error_magnitude);
+    iteration++;
   }
 
   /* If we've returned from the loop without nullopt,
