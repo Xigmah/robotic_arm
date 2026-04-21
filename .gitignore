@@ -10,4 +10,5 @@ out/
 Testing/
 
 # Ignore cached save
-.$*
+*.$*
+*.bkp
