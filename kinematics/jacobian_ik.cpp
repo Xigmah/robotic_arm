@@ -35,7 +35,7 @@ std::optional<std::vector<double>> JacobianIK::solve(
 
   // Check joint_state.joint_frames vector is the same size as joint_angles
   if (joint_state.joint_frames.size() != arm_config.getNumJoints()) {
-    throw std::out_of_range("Joint frames do not match number of joints");
+    throw std::out_of_range("Joint frames do not match number of joints\n");
   }
 
   math::Vector3D end_eff_pos{joint_state.end_eff_vec};
@@ -47,6 +47,7 @@ std::optional<std::vector<double>> JacobianIK::solve(
   while (error_magnitude >= tolerance) {
     // nullopt if max iterations reached
     if (iteration >= max_iteration) {
+      printf("Unable to reach target before reaching max iterations\n");
       return std::nullopt;
     }
 
@@ -93,7 +94,7 @@ std::optional<std::vector<double>> JacobianIK::solve(
 
     // Check joint_state.joint_frames vector size is same as number of joints
     if (joint_state.joint_frames.size() != arm_config.getNumJoints()) {
-      throw std::out_of_range("Joint frames do not match number of joints");
+      throw std::out_of_range("Joint frames do not match number of joints\n");
     }
 
     // Set new error

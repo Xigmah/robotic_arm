@@ -54,7 +54,7 @@ ChainState KinematicChain::computeForwardKinematics(
         joint_axis = T.getRotColumn(2);
         break;
       default:
-        throw std::runtime_error("Unkown joint rotation");
+        throw std::runtime_error("Unkown joint rotation\n");
     }
 
     // Store joint position and rotational axis prior to translation 
@@ -73,7 +73,7 @@ ChainState KinematicChain::computeForwardKinematics(
         T.rotateZ(config.getJointAngle(idx));
         break;
       default:
-        throw std::runtime_error("Unkown joint rotation");
+        throw std::runtime_error("Unkown joint rotation\n");
     }
     T.translate(config.getLinkLength(idx), 0.0, 0.0);
   }

@@ -29,7 +29,7 @@ void ArmConfig::addJoint(std::unique_ptr<Joint> joint) {
 // Get Joint
 Joint* ArmConfig::getJoint(size_t index) const {
   if (index >= joints.size()) {
-    throw std::out_of_range("Selected joint index out of range");
+    throw std::out_of_range("Selected joint index out of range\n");
   }
   return joints[index].get();
 }
@@ -39,7 +39,7 @@ Joint* ArmConfig::getJoint(size_t index) const {
  */
 double ArmConfig::getLinkLength(size_t index) const {
   if (index >= joints.size()) {
-    throw std::out_of_range("Selected joint index out of range");
+    throw std::out_of_range("Selected joint index out of range\n");
   }
   return joints[index]->getLinkLength();
 }
@@ -49,7 +49,7 @@ double ArmConfig::getLinkLength(size_t index) const {
  */
 double ArmConfig::getJointAngle(size_t index) const {
   if (index >= joints.size()) {
-    throw std::out_of_range("Selected joint index out of range");
+    throw std::out_of_range("Selected joint index out of range\n");
   }
   return joints[index]->getCurrentAngle();
 }
@@ -59,7 +59,7 @@ double ArmConfig::getJointAngle(size_t index) const {
  */
 void ArmConfig::setJointAngle(size_t index, double angle_rad) {
   if (index >= joints.size()) {
-    throw std::out_of_range("Selected joint index out of range");
+    throw std::out_of_range("Selected joint index out of range\n");
   }
   joints[index]->setTargetAngle(angle_rad);
 }
@@ -69,7 +69,7 @@ void ArmConfig::setJointAngle(size_t index, double angle_rad) {
  */
 void ArmConfig::setAllJointAngles(const std::vector<double>& angles) {
   if (angles.size() != joints.size()) {
-    throw std::runtime_error("Unmatched number of angles to number of joints");
+    throw std::runtime_error("Unmatched number of angles to number of joints\n");
   }
   for (size_t i{0}; i < joints.size(); i++) {
     ArmConfig::setJointAngle(i, angles[i]);

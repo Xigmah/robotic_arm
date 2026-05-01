@@ -39,7 +39,7 @@ std::unique_ptr<Joint> JointFactory::create(JointType type, double min_limit,
       //   link_length, hardware_id);
 
     default:
-      throw std::runtime_error("Unknown joint type");
+      throw std::runtime_error("Unknown joint type\n");
   }
 }
 

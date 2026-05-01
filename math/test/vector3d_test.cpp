@@ -1,4 +1,4 @@
-#include "vector3d.h"
+#include "../vector3d.h"
 
 #include <gtest/gtest.h>
 

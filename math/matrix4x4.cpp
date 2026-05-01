@@ -55,7 +55,7 @@ Matrix4x4 Matrix4x4::identity() {
 // Element getter
 double Matrix4x4::get(size_t row, size_t col) const {
   if (row >= SIZE || col >= SIZE) {
-    throw std::out_of_range("Invalid matrix index");
+    throw std::out_of_range("Invalid matrix index\n");
   }
   return m[row][col];
 }
@@ -63,7 +63,7 @@ double Matrix4x4::get(size_t row, size_t col) const {
 // Element Setter
 void Matrix4x4::set(size_t row, size_t col, double value) {
   if (row >= SIZE || col >= SIZE) {
-    throw std::out_of_range("Invalid matrix index");
+    throw std::out_of_range("Invalid matrix index\n");
   }
   m[row][col] = value;
 }

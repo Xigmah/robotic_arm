@@ -68,7 +68,7 @@ bool Transform::equals(const Transform& other, double tolerance) const {
 
 std::array<double, 3> Transform::getRotColumn(size_t idx) const {
   if (idx > 2){
-    throw std::out_of_range("Selected column index out of range");
+    throw std::out_of_range("Selected column index out of range\n");
   }
   return std::array<double, 3>{matrix.get(0, idx), matrix.get(1, idx), matrix.get(2, idx)};
 }
