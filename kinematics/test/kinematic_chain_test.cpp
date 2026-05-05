@@ -9,7 +9,7 @@ using namespace arm::kinematics;
 using namespace arm::hardware;
 using namespace arm::math;
 
-class KinematicChainTest : public ::testing::Test {
+class KinematicChainTests : public ::testing::Test {
  protected:
   ArmConfig config;
 
@@ -23,12 +23,12 @@ class KinematicChainTest : public ::testing::Test {
   }
 };
 
-TEST_F(KinematicChainTest, testNumJoints) {
+TEST_F(KinematicChainTests, testNumJoints) {
   KinematicChain chain(config);
   EXPECT_EQ(chain.getNumJoints(), 3);
 }
 
-TEST_F(KinematicChainTest, testSetAngle) {
+TEST_F(KinematicChainTests, testSetAngle) {
   KinematicChain chain(config);
 
   std::vector<double> angles{0.3, 0.5, 0.8, 1.0};
@@ -43,7 +43,7 @@ TEST_F(KinematicChainTest, testSetAngle) {
   EXPECT_EQ(chain.getAllJointAngles(), angles);
 }
 
-TEST_F(KinematicChainTest, testFKZeroRot) {
+TEST_F(KinematicChainTests, testFKZeroRot) {
   KinematicChain chain(config);
   auto result = chain.computFKTranslation();
 
@@ -52,7 +52,7 @@ TEST_F(KinematicChainTest, testFKZeroRot) {
   EXPECT_NEAR(result.get_z(), 0.0, 1e-6);
 }
 
-TEST_F(KinematicChainTest, testFKBaseRot) {
+TEST_F(KinematicChainTests, testFKBaseRot) {
   KinematicChain chain(config);
 
   chain.setJointAngle(0, deg_to_rad(90));
@@ -74,7 +74,7 @@ TEST_F(KinematicChainTest, testFKBaseRot) {
   EXPECT_NEAR(result.get_z(), 0.0, 1e-6);
 }
 
-TEST_F(KinematicChainTest, testFKShoulderRot) {
+TEST_F(KinematicChainTests, testFKShoulderRot) {
   KinematicChain chain(config);
 
   chain.setJointAngle(1, deg_to_rad(90));
@@ -96,7 +96,7 @@ TEST_F(KinematicChainTest, testFKShoulderRot) {
   EXPECT_NEAR(result.get_z(), 0.0, 1e-6);
 }
 
-TEST_F(KinematicChainTest, testFKElbowRot) {
+TEST_F(KinematicChainTests, testFKElbowRot) {
   KinematicChain chain(config);
 
   chain.setJointAngle(2, deg_to_rad(90));
@@ -106,7 +106,7 @@ TEST_F(KinematicChainTest, testFKElbowRot) {
   EXPECT_NEAR(result.get_z(), -60.0, 1e-6);
 }
 
-TEST_F(KinematicChainTest, testFKCombinedRotations) {
+TEST_F(KinematicChainTests, testFKCombinedRotations) {
   KinematicChain chain(config);
 
   chain.setJointAngle(0, deg_to_rad(45));
@@ -118,7 +118,7 @@ TEST_F(KinematicChainTest, testFKCombinedRotations) {
   EXPECT_LT(result.get_z(), 0.0);
 }
 
-TEST_F(KinematicChainTest, testFKAtJointLimits) {
+TEST_F(KinematicChainTests, testFKAtJointLimits) {
   KinematicChain chain(config);
 
   chain.setJointAngle(0, deg_to_rad(180));

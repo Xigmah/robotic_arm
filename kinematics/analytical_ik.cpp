@@ -13,7 +13,8 @@
 #include <algorithm>
 #include <cmath>
 
-using namespace std;
+using std::vector;
+using std::optional;
 
 namespace arm {
 namespace kinematics {
@@ -60,7 +61,7 @@ optional<ShoulderElbowAngles> AnalyticIK3DOF::solve2DArm(
   double temp = (r * r + z * z - L_shoul * L_shoul - L_elb * L_elb) /
                 (2 * L_shoul * L_elb);
   if (temp > 1 || temp < -1) {
-    return nullopt;
+    return std::nullopt;
   };
 
   if (arm_bend_pos) {
@@ -76,7 +77,7 @@ optional<ShoulderElbowAngles> AnalyticIK3DOF::solve2DArm(
   // If shoul_angle is outside of limits, arm not solvable
   if (!arm_config.getJoint(Joint::SHOUL)->isWithinLimits(shoul_angle) ||
       !arm_config.getJoint(Joint::ELB)->isWithinLimits(elb_angle)) {
-    return nullopt;
+    return std::nullopt;
   }
 
   return ShoulderElbowAngles{shoul_angle, elb_angle};
@@ -113,7 +114,7 @@ optional<vector<double>> AnalyticIK3DOF::solve(
 
   // If solve2DArm still has no solution, nullopt
   if (!joint_angles.has_value()) {
-    return nullopt;
+    return std::nullopt;
   }
 
   return vector<double>{base_angle, joint_angles->shoulder,

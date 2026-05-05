@@ -10,7 +10,7 @@ using namespace arm::kinematics;
 using namespace arm::hardware;
 using namespace arm::math;
 
-class JacobianIKTest : public ::testing::Test {
+class JacobianIKTests : public ::testing::Test {
  protected:
   ArmConfig config;
 
@@ -30,7 +30,7 @@ class JacobianIKTest : public ::testing::Test {
 };
 
 // Test full solve() with FK verification
-TEST_F(JacobianIKTest, Solve_VerifyWithFK_AlongXAxis) {
+TEST_F(JacobianIKTests, Solve_VerifyWithFK_AlongXAxis) {
   KinematicChain chain(config);
   JacobianIK ik(config);
 
@@ -48,7 +48,7 @@ TEST_F(JacobianIKTest, Solve_VerifyWithFK_AlongXAxis) {
 }
 
 // Test full solve() with target that necessitates joint bend
-TEST_F(JacobianIKTest, Solve_TargetWithBend) {
+TEST_F(JacobianIKTests, Solve_TargetWithBend) {
   KinematicChain chain(config);
   JacobianIK ik(config);
 

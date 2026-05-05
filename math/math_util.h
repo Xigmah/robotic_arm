@@ -12,14 +12,15 @@
 #include <stdexcept>
 #include <vector>
 
-using namespace std;
+using std::optional;
+using std::vector;
 
 inline static constexpr double def_tol = 1e-6;
 
 inline double deg_to_rad(double deg) { return deg * (M_PI / 180); }
 
 inline bool compare(double v1, double v2, double tol = def_tol) {
-  return abs(v1 - v2) <= tol;
+  return fabs(v1 - v2) <= tol;
 }
 
 inline double clamp(double value, double min, double max) {
@@ -64,12 +65,12 @@ inline optional<vector<vector<double>>> transpose_matrix(
   // Check for empty matrices
   if (mat.empty()) {
     printf("Matrix is empty\n");
-    return nullopt;
+    return std::nullopt;
   }
 
   // Check if Matrix is consistent
   if (!matrix_consistent(mat)) {
-    return nullopt;
+    return std::nullopt;
   }
 
   // Resultant matrix, col x rows
@@ -99,18 +100,18 @@ inline optional<vector<vector<double>>> multiple_matrices(
   // Check for empty matrices
   if (a_matrix.empty() || b_matrix.empty()) {
     printf("One of the matrices are empty\n");
-    return nullopt;
+    return std::nullopt;
   }
 
   // Check if A columns and B rows are equivalent
   if (a_matrix[0].size() != b_matrix.size()) {
     printf("A columns and B rows are not equivalent\n");
-    return nullopt;
+    return std::nullopt;
   }
 
   // Check if both matrices are consistent
   if (!matrix_consistent(a_matrix) || !matrix_consistent(b_matrix)) {
-    return nullopt;
+    return std::nullopt;
   }
 
   // Resultant matrix, m x p
@@ -141,18 +142,18 @@ inline optional<vector<vector<double>>> inverse_matrix(
   // Check for empty matrix
   if (mat.empty()) {
     printf("Matrix is empty\n");
-    return nullopt;
+    return std::nullopt;
   }
 
   // Check matrix is square
   if (mat.size() != mat[0].size()) {
     printf("Matrix is not square\n");
-    return nullopt;
+    return std::nullopt;
   }
 
   // Check consistency
   if (!matrix_consistent(mat)) {
-    return nullopt;
+    return std::nullopt;
   }
 
   size_t n = mat.size();
@@ -175,16 +176,18 @@ inline optional<vector<vector<double>>> inverse_matrix(
     // Find pivot (largest value in column to reduce floating point error)
     size_t pivot = col;
     for (size_t row{col + 1}; row < n; row++) {
-      if (std::abs(augmented[row][col]) > std::abs(augmented[pivot][col])) {
+      if (fabs(augmented[row][col]) > fabs(augmented[pivot][col])) {
         pivot = row;
       }
     }
 
     // Swap pivot row to current row
-    std::swap(augmented[col], augmented[pivot]);
+    swap(augmented[col], augmented[pivot]);
 
     // Check if matrix is singular (non-invertible)
-    if (std::abs(augmented[col][col]) < 1e-10) return nullopt;
+    if (fabs(augmented[col][col]) < 1e-10) {
+      return std::nullopt;
+    }
 
     // Scale pivot row so the diagonal becomes 1
     double scale = augmented[col][col];

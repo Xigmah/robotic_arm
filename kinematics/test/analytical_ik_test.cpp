@@ -9,7 +9,7 @@ using namespace arm::kinematics;
 using namespace arm::hardware;
 using namespace arm::math;
 
-class AnalyticIKTest : public ::testing::Test {
+class AnalyticIKTests : public ::testing::Test {
  protected:
   ArmConfig config;
 
@@ -24,7 +24,7 @@ class AnalyticIKTest : public ::testing::Test {
 };
 
 // Test full solve() with FK verification
-TEST_F(AnalyticIKTest, Solve_VerifyWithFK_AlongXAxis) {
+TEST_F(AnalyticIKTests, Solve_VerifyWithFK_AlongXAxis) {
   KinematicChain chain(config);
   AnalyticIK3DOF ik(config);
 
@@ -41,7 +41,7 @@ TEST_F(AnalyticIKTest, Solve_VerifyWithFK_AlongXAxis) {
   EXPECT_NEAR(result.get_z(), target.get_z(), 1e-3);
 }
 
-TEST_F(AnalyticIKTest, Solve_VerifyWithFK_Diagonal) {
+TEST_F(AnalyticIKTests, Solve_VerifyWithFK_Diagonal) {
   KinematicChain chain(config);
   AnalyticIK3DOF ik(config);
 
@@ -58,7 +58,7 @@ TEST_F(AnalyticIKTest, Solve_VerifyWithFK_Diagonal) {
   EXPECT_NEAR(result.get_z(), target.get_z(), 1e-3);
 }
 
-TEST_F(AnalyticIKTest, Solve_VerifyWithFK_WithHeight) {
+TEST_F(AnalyticIKTests, Solve_VerifyWithFK_WithHeight) {
   KinematicChain chain(config);
   AnalyticIK3DOF ik(config);
 
@@ -75,7 +75,7 @@ TEST_F(AnalyticIKTest, Solve_VerifyWithFK_WithHeight) {
   EXPECT_NEAR(result.get_z(), target.get_z(), 1e-3);
 }
 
-TEST_F(AnalyticIKTest, Solve_VerifyWithFK_NegativeZ) {
+TEST_F(AnalyticIKTests, Solve_VerifyWithFK_NegativeZ) {
   KinematicChain chain(config);
   AnalyticIK3DOF ik(config);
 
@@ -92,7 +92,7 @@ TEST_F(AnalyticIKTest, Solve_VerifyWithFK_NegativeZ) {
   EXPECT_NEAR(result.get_z(), target.get_z(), 1e-3);
 }
 
-TEST_F(AnalyticIKTest, Solve_MaxReach) {
+TEST_F(AnalyticIKTests, Solve_MaxReach) {
   KinematicChain chain(config);
   AnalyticIK3DOF ik(config);
 
@@ -108,7 +108,7 @@ TEST_F(AnalyticIKTest, Solve_MaxReach) {
   EXPECT_NEAR(result.get_x(), target.get_x(), 1e-3);
 }
 
-TEST_F(AnalyticIKTest, Solve_BeyondMaxReach) {
+TEST_F(AnalyticIKTests, Solve_BeyondMaxReach) {
   AnalyticIK3DOF ik(config);
 
   Vector3D target(250, 0, 0);  // Beyond 240mm max reach
@@ -117,7 +117,7 @@ TEST_F(AnalyticIKTest, Solve_BeyondMaxReach) {
   EXPECT_FALSE(angles.has_value());
 }
 
-TEST_F(AnalyticIKTest, Solve_AtOrigin) {
+TEST_F(AnalyticIKTests, Solve_AtOrigin) {
   AnalyticIK3DOF ik(config);
 
   Vector3D target(0, 0, 0);  // At base origin
@@ -126,7 +126,7 @@ TEST_F(AnalyticIKTest, Solve_AtOrigin) {
   EXPECT_FALSE(angles.has_value());  // Should be unreachable (inside base link)
 }
 
-TEST_F(AnalyticIKTest, Solve_MinimumReach) {
+TEST_F(AnalyticIKTests, Solve_MinimumReach) {
   KinematicChain chain(config);
   AnalyticIK3DOF ik(config);
 
@@ -143,7 +143,7 @@ TEST_F(AnalyticIKTest, Solve_MinimumReach) {
   }
 }
 
-TEST_F(AnalyticIKTest, Solve_AllQuadrants) {
+TEST_F(AnalyticIKTests, Solve_AllQuadrants) {
   KinematicChain chain(config);
   AnalyticIK3DOF ik(config);
 
@@ -171,14 +171,14 @@ TEST_F(AnalyticIKTest, Solve_AllQuadrants) {
 }
 
 // Test isReachable
-TEST_F(AnalyticIKTest, IsReachable_ValidTarget) {
+TEST_F(AnalyticIKTests, IsReachable_ValidTarget) {
   AnalyticIK3DOF ik(config);
 
   Vector3D target(150, 150, 0);
   EXPECT_TRUE(ik.isReachable(target));
 }
 
-TEST_F(AnalyticIKTest, IsReachable_UnreachableTarget) {
+TEST_F(AnalyticIKTests, IsReachable_UnreachableTarget) {
   AnalyticIK3DOF ik(config);
 
   Vector3D target(300, 300, 0);  // Way beyond reach

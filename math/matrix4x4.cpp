@@ -197,7 +197,7 @@ bool Matrix4x4::equals(const Matrix4x4& other, double tolerance) const {
     for (size_t j{0}; j < SIZE; j++) {
       // If difference in elements are larger than tolerance, 
       //  return false
-      if (std::abs(this->get(i, j) - other.get(i, j)) > tolerance) {
+      if (fabs(this->get(i, j) - other.get(i, j)) > tolerance) {
         return false;
       }
     }

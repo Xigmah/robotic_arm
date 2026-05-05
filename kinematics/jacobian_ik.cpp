@@ -23,8 +23,11 @@ JacobianIK::JacobianIK(hardware::ArmConfig& config)
 
 std::optional<std::vector<double>> JacobianIK::solve(
     const math::Vector3D& target_position) const {
-  // Initializing angles for return
+  /* Initializing angles for return and
+   * Initializing num_joints for use in forward algo
+   */
   std::vector<double> joint_angles{arm_config.getAllJointAngles()};
+  size_t num_joints{arm_config.getNumJoints()};
 
   // Initializing a copy of arm_config for use when looping
   hardware::ArmConfig temp{arm_config};
@@ -34,7 +37,7 @@ std::optional<std::vector<double>> JacobianIK::solve(
   ChainState joint_state{comp.computeForwardKinematics(temp)};
 
   // Check joint_state.joint_frames vector is the same size as joint_angles
-  if (joint_state.joint_frames.size() != arm_config.getNumJoints()) {
+  if (joint_state.joint_frames.size() != num_joints) {
     throw std::out_of_range("Joint frames do not match number of joints\n");
   }
 
@@ -51,24 +54,24 @@ std::optional<std::vector<double>> JacobianIK::solve(
       return std::nullopt;
     }
 
-    /* Instantiate Jacobian,
+    /* Instantiate Δθ and Jacobian,
+     * Set Δθ back to empty in new while loop
      * Set jacobian back to empty in new while loop
      */
-    std::vector<math::Vector3D> jacobian{};
-    for (auto frame : joint_state.joint_frames) {
-      // J_column_i = axis_i × (end_effector_pos - joint_i_pos)
-      math::Vector3D jacobian_column{
-          frame.axis.cross(end_eff_pos - frame.joint_pos)};
-
-      jacobian.push_back(jacobian_column);
-    }
-
-    /* Instantiate Δθ,
-     * Set Δθ back to empty in new while loop
-     */
     std::vector<double> delta_theta{};
-    for (auto column : jacobian) {
-      delta_theta.push_back(column.dot(error));
+    std::vector<std::vector<double>> jacobian(
+        3, std::vector<double>(num_joints, 0.0));
+    for (size_t i{0}; i < num_joints; i++) {
+      const auto& frame = joint_state.joint_frames[i];
+
+      // J_column_i = axis_i × (end_effector_pos - joint_i_pos)
+      math::Vector3D col{frame.axis.cross(end_eff_pos - frame.joint_pos)};
+      jacobian[0][i] = col.get_x();
+      jacobian[1][i] = col.get_y();
+      jacobian[2][i] = col.get_z();
+      
+      // Build Δθ
+      delta_theta.push_back(col.dot(error));
     }
 
     /* Set delta_theta to joints and compute
@@ -93,7 +96,7 @@ std::optional<std::vector<double>> JacobianIK::solve(
     end_eff_pos = joint_state.end_eff_vec;
 
     // Check joint_state.joint_frames vector size is same as number of joints
-    if (joint_state.joint_frames.size() != arm_config.getNumJoints()) {
+    if (joint_state.joint_frames.size() != num_joints) {
       throw std::out_of_range("Joint frames do not match number of joints\n");
     }
 
