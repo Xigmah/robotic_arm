@@ -9,18 +9,18 @@ using namespace arm::hardware;
 TEST(ArmConfigTests, AddJoints) {
   ArmConfig config;
 
-  config.addJoint(JointFactory::create(JointType::SIMULATED, -180, 180, 100));
-  config.addJoint(JointFactory::create(JointType::SIMULATED, -90, 90, 80));
-  config.addJoint(JointFactory::create(JointType::SIMULATED, -90, 90, 60));
+  config.addJoint(JointFactory::create(JointType::SIMULATED, -180, 180, 100, RotAxis::Y));
+  config.addJoint(JointFactory::create(JointType::SIMULATED, -90, 90, 80, RotAxis::Y));
+  config.addJoint(JointFactory::create(JointType::SIMULATED, -90, 90, 60, RotAxis::Y));
 
   EXPECT_EQ(config.getNumJoints(), 3);
 }
 
 TEST(ArmConfigTests, GetLinkLengths) {
   ArmConfig config;
-  config.addJoint(JointFactory::create(JointType::SIMULATED, -180, 180, 100));
-  config.addJoint(JointFactory::create(JointType::SIMULATED, -90, 90, 80));
-  config.addJoint(JointFactory::create(JointType::SIMULATED, -90, 90, 60));
+  config.addJoint(JointFactory::create(JointType::SIMULATED, -180, 180, 100, RotAxis::Y));
+  config.addJoint(JointFactory::create(JointType::SIMULATED, -90, 90, 80, RotAxis::Y));
+  config.addJoint(JointFactory::create(JointType::SIMULATED, -90, 90, 60, RotAxis::Y));
 
   EXPECT_EQ(config.getLinkLength(0), 100.0);
   EXPECT_EQ(config.getLinkLength(1), 80.0);
@@ -29,8 +29,8 @@ TEST(ArmConfigTests, GetLinkLengths) {
 
 TEST(ArmConfigTests, SetAndGetJointAngles) {
   ArmConfig config;
-  config.addJoint(JointFactory::create(JointType::SIMULATED, -180, 180, 100));
-  config.addJoint(JointFactory::create(JointType::SIMULATED, -90, 90, 80));
+  config.addJoint(JointFactory::create(JointType::SIMULATED, -180, 180, 100, RotAxis::Y));
+  config.addJoint(JointFactory::create(JointType::SIMULATED, -90, 90, 80, RotAxis::Y));
 
   config.setJointAngle(0, 45.0);
   config.setJointAngle(1, -30.0);
@@ -41,9 +41,9 @@ TEST(ArmConfigTests, SetAndGetJointAngles) {
 
 TEST(ArmConfigTests, SetAllJointAngles) {
   ArmConfig config;
-  config.addJoint(JointFactory::create(JointType::SIMULATED, -180, 180, 100));
-  config.addJoint(JointFactory::create(JointType::SIMULATED, -90, 90, 80));
-  config.addJoint(JointFactory::create(JointType::SIMULATED, -90, 90, 60));
+  config.addJoint(JointFactory::create(JointType::SIMULATED, -180, 180, 100, RotAxis::Y));
+  config.addJoint(JointFactory::create(JointType::SIMULATED, -90, 90, 80, RotAxis::Y));
+  config.addJoint(JointFactory::create(JointType::SIMULATED, -90, 90, 60, RotAxis::Y));
 
   std::vector<double> angles = {10.0, 20.0, 30.0};
   config.setAllJointAngles(angles);
@@ -56,7 +56,7 @@ TEST(ArmConfigTests, SetAllJointAngles) {
 
 TEST(ArmConfigTests, OutOfBoundsThrows) {
   ArmConfig config;
-  config.addJoint(JointFactory::create(JointType::SIMULATED, -180, 180, 100));
+  config.addJoint(JointFactory::create(JointType::SIMULATED, -180, 180, 100, RotAxis::Y));
 
   EXPECT_THROW(config.getJoint(5), std::out_of_range);
   EXPECT_THROW(config.setJointAngle(5, 0), std::out_of_range);

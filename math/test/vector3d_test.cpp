@@ -1,4 +1,4 @@
-#include "vector3d.h"
+#include "../vector3d.h"
 
 #include <gtest/gtest.h>
 
@@ -60,6 +60,17 @@ TEST(Vector3DTests, testDistance) {
   double dist = v1.distance(v2);
 
   EXPECT_NEAR(dist, 5.0, 1e-6);
+}
+
+TEST(Vector3DTests, testCross) {
+  Vector3D v1(1, 0, 0);
+  Vector3D v2(0, 1, 0);
+  Vector3D product = v1.cross(v2);
+
+  // Resulting cross should be (0,0,1)
+  EXPECT_NEAR(product.get_x(), 0, 1e-6);
+  EXPECT_NEAR(product.get_y(), 0, 1e-6);
+  EXPECT_NEAR(product.get_z(), 1, 1e-6);
 }
 
 TEST(Vector3DTests, testNormalized) {

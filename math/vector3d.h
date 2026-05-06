@@ -9,6 +9,8 @@
  */
 #pragma once
 
+#include <array>
+
 namespace arm {
 namespace math {
 
@@ -27,15 +29,17 @@ class Vector3D {
   ~Vector3D() = default;
 
   // Operations
+  Vector3D operator*(double scalar) const;          // v * 2.0
   Vector3D operator+(const Vector3D& other) const;  // v1 + v2
   Vector3D operator-(const Vector3D& other) const;  // v1 - v2
-  Vector3D operator*(double scalar) const;          // v * 2.0
+  Vector3D& operator=(const std::array<double, 3>& values); 
 
   // Utility
-  Vector3D normalized() const;                   // Unit vector
   double magnitude() const;                      // Length of vector
   double distance(const Vector3D& other) const;  // Distance between points
   double dot(const Vector3D& other) const;       // Dot product
+  Vector3D normalized() const;                   // Unit vector
+  Vector3D cross(const Vector3D& other) const;   // Cross Product
 
   // Comparison (with tolerance for floating point)
   bool equals(const Vector3D& other, double tolerance = 1e-6) const;

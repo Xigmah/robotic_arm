@@ -8,7 +8,6 @@
  */
 #pragma once
 
-#include <memory>
 #include <vector>
 
 #include "joint.h"
@@ -22,12 +21,17 @@ class ArmConfig {
 
  public:
   ArmConfig() = default;
+  ArmConfig(const ArmConfig& source);
+  ~ArmConfig() = default;
 
   // Build configuration
   void addJoint(std::unique_ptr<Joint> joint);
 
   // Queries
   size_t getNumJoints() const { return joints.size(); }
+  RotAxis getJointRotAxis(size_t index) const {
+    return joints[index]->getRotAxis();
+  };
   Joint* getJoint(size_t index) const;
 
   double getLinkLength(size_t index) const;

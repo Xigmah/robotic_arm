@@ -18,6 +18,11 @@ namespace math {
 // Default constructor
 Vector3D::Vector3D(double x, double y, double z) : x(x), y(y), z(z) {}
 
+// Scalar multiplication
+Vector3D Vector3D::operator*(double scalar) const {
+return Vector3D{x * scalar, y * scalar, z * scalar};
+}
+
 // Addition
 Vector3D Vector3D::operator+(const Vector3D& other) const {
   return Vector3D{x + other.x, y + other.y, z + other.z};
@@ -28,9 +33,14 @@ Vector3D Vector3D::operator-(const Vector3D& other) const {
   return Vector3D{x - other.x, y - other.y, z - other.z};
 }
 
-// Scalar multiplication
-Vector3D Vector3D::operator*(double scalar) const {
-  return Vector3D{x * scalar, y * scalar, z * scalar};
+/* Equals Array
+ * This assumes values is an array of {x,y,z}
+ */
+Vector3D& Vector3D::operator=(const std::array<double, 3>& values) {
+  x = values[0];
+  y = values[1];
+  z = values[2];
+  return *this;
 }
 
 // Magnitude (length of vector)
@@ -40,6 +50,19 @@ double Vector3D::magnitude() const { return std::sqrt(x * x + y * y + z * z); }
 double Vector3D::distance(const Vector3D& other) const {
   Vector3D temp = *this - other;
   return temp.magnitude();
+}
+
+// Cross product
+Vector3D Vector3D::cross(const Vector3D& other) const {
+  /*
+   * a × b = (a.y*b.z - a.z*b.y,
+   *          a.z*b.x - a.x*b.z,
+   *          a.x*b.y - a.y*b.x)
+   */
+  Vector3D temp{this->y * other.z - this->z * other.y,
+                this->z * other.x - this->x * other.z,
+                this->x * other.y - this->y * other.x};
+  return temp;
 }
 
 // Normalize (unit vector)

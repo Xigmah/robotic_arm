@@ -20,8 +20,9 @@ namespace hardware {
  * max -> rad
  * length -> mm
  */
-SimulatedJoint::SimulatedJoint(double min, double max, double length)
-    : Joint(min, max, length) {}
+SimulatedJoint::SimulatedJoint(double min, double max, double length,
+                               RotAxis axis)
+    : Joint(min, max, length, axis) {}
 
 /* Set Target to travel to
  * angle -> rad
@@ -36,6 +37,10 @@ void SimulatedJoint::setTargetAngle(double angle_rad) {
     std::cout << "\nangle out of bounds, clamping" << std::endl;
     current_angle = std::clamp(angle_rad, min_limit, max_limit);
   }
+}
+
+std::unique_ptr<Joint> SimulatedJoint::clone() const {
+  return std::make_unique<SimulatedJoint>(*this);
 }
 
 }  // namespace hardware
