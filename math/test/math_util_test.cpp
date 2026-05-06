@@ -128,6 +128,93 @@ TEST(MathUtilTests, TransposeMatrixDoubleTransposeIsIdentity) {
   EXPECT_TRUE(matrices_equal(*twice, mat));
 }
 
+// ─── add_matrices ────────────────────────────────────────────────────────────
+
+TEST(MathUtilTests, AddMatricesEmptyA) {
+  EXPECT_FALSE(add_matrices({}, {{1, 2}}).has_value());
+}
+
+TEST(MathUtilTests, AddMatricesEmptyB) {
+  EXPECT_FALSE(add_matrices({{1, 2}}, {}).has_value());
+}
+
+TEST(MathUtilTests, AddMatricesDimensionMismatch) {
+  vector<vector<double>> a = {{1, 2}, {3, 4}};
+  vector<vector<double>> b = {{1, 2, 3}, {4, 5, 6}};
+  EXPECT_FALSE(add_matrices(a, b).has_value());
+}
+
+TEST(MathUtilTests, AddMatricesSquare2x2) {
+  vector<vector<double>> a = {{1, 2}, {3, 4}};
+  vector<vector<double>> b = {{5, 6}, {7, 8}};
+  vector<vector<double>> expected = {{6, 8}, {10, 12}};
+  auto result = add_matrices(a, b);
+  ASSERT_TRUE(result.has_value());
+  EXPECT_TRUE(matrices_equal(*result, expected));
+}
+
+TEST(MathUtilTests, AddMatricesRectangular) {
+  vector<vector<double>> a = {{1, 2, 3}, {4, 5, 6}};
+  vector<vector<double>> b = {{7, 8, 9}, {10, 11, 12}};
+  vector<vector<double>> expected = {{8, 10, 12}, {14, 16, 18}};
+  auto result = add_matrices(a, b);
+  ASSERT_TRUE(result.has_value());
+  EXPECT_TRUE(matrices_equal(*result, expected));
+}
+
+TEST(MathUtilTests, AddMatricesWithZeroMatrix) {
+  vector<vector<double>> a = {{1, 2}, {3, 4}};
+  vector<vector<double>> zero = {{0, 0}, {0, 0}};
+  auto result = add_matrices(a, zero);
+  ASSERT_TRUE(result.has_value());
+  EXPECT_TRUE(matrices_equal(*result, a));
+}
+
+TEST(MathUtilTests, AddMatricesWithNegatives) {
+  vector<vector<double>> a = {{1, 2}, {3, 4}};
+  vector<vector<double>> b = {{-1, -2}, {-3, -4}};
+  vector<vector<double>> expected = {{0, 0}, {0, 0}};
+  auto result = add_matrices(a, b);
+  ASSERT_TRUE(result.has_value());
+  EXPECT_TRUE(matrices_equal(*result, expected));
+}
+
+// ─── multiple_matrix_by_scalar ───────────────────────────────────────────────
+
+TEST(MathUtilTests, MultipleMatrixByScalarEmptyMatrix) {
+  vector<vector<double>> mat = {};
+  multiple_matrix_by_scalar(mat, 2.0);
+  EXPECT_TRUE(mat.empty());
+}
+
+TEST(MathUtilTests, MultipleMatrixByScalarByTwo) {
+  vector<vector<double>> mat = {{1, 2}, {3, 4}};
+  vector<vector<double>> expected = {{2, 4}, {6, 8}};
+  multiple_matrix_by_scalar(mat, 2.0);
+  EXPECT_TRUE(matrices_equal(mat, expected));
+}
+
+TEST(MathUtilTests, MultipleMatrixByScalarByZero) {
+  vector<vector<double>> mat = {{1, 2}, {3, 4}};
+  vector<vector<double>> expected = {{0, 0}, {0, 0}};
+  multiple_matrix_by_scalar(mat, 0.0);
+  EXPECT_TRUE(matrices_equal(mat, expected));
+}
+
+TEST(MathUtilTests, MultipleMatrixByScalarByOne) {
+  vector<vector<double>> mat = {{1, 2}, {3, 4}};
+  vector<vector<double>> expected = {{1, 2}, {3, 4}};
+  multiple_matrix_by_scalar(mat, 1.0);
+  EXPECT_TRUE(matrices_equal(mat, expected));
+}
+
+TEST(MathUtilTests, MultipleMatrixByScalarByNegative) {
+  vector<vector<double>> mat = {{1, 2}, {3, 4}};
+  vector<vector<double>> expected = {{-1, -2}, {-3, -4}};
+  multiple_matrix_by_scalar(mat, -1.0);
+  EXPECT_TRUE(matrices_equal(mat, expected));
+}
+
 // ─── multiple_matrices ──────────────────────────────────────────────────────
 
 TEST(MathUtilTests, MultipleMatricesEmptyA) {

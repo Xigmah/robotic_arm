@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <stdexcept>
 
+#include "../math/math_util.h"
 #include "kinematic_chain.h"
 
 namespace arm {
@@ -69,10 +70,21 @@ std::optional<std::vector<double>> JacobianIK::solve(
       jacobian[0][i] = col.get_x();
       jacobian[1][i] = col.get_y();
       jacobian[2][i] = col.get_z();
-      
+
       // Build Δθ
       delta_theta.push_back(col.dot(error));
     }
+
+    // Δθ = Jᵀ(JJᵀ + λ²I)⁻¹ · error
+    auto jacobian_t{transpose_matrix(jacobian)};
+    auto jj_t{multiple_matrices(jacobian, *jacobian_t)};
+    auto id{generate_identity(jj_t->size())};
+    multiple_matrix_by_scalar(id, lambda * lambda);
+    auto inverse_mat = inverse_matrix(*add_matrices(*jj_t, id));
+    auto pseudo_inverse = multiple_matrices(*jacobian_t, *inverse_mat);
+    vector<vector<double>> vector_error{
+        {error.get_x()}, {error.get_y()}, {error.get_z()}};
+    auto pseudo_delta_theta = multiple_matrices(*pseudo_inverse, vector_error);
 
     /* Set delta_theta to joints and compute
      * new forwardkinematics, then compute new ChainState.

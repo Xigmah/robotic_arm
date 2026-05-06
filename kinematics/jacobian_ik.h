@@ -15,6 +15,7 @@ namespace kinematics {
 
 class JacobianIK : public InverseKinematics {
  private:
+  double lambda{0.1};  // mm
   double step_size{0.00001};
   double tolerance{1.0};
   size_t max_iteration{10000};

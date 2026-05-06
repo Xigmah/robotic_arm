@@ -7,9 +7,10 @@
  */
 #pragma once
 
+#include <stdio.h>
+
 #include <cmath>
 #include <optional>
-#include <stdexcept>
 #include <vector>
 
 using std::optional;
@@ -25,6 +26,16 @@ inline bool compare(double v1, double v2, double tol = def_tol) {
 
 inline double clamp(double value, double min, double max) {
   return fmax(min, fmin(value, max));
+}
+
+// Generate identity matrix
+inline vector<vector<double>> generate_identity(size_t m_size) {
+  vector<vector<double>> identity(m_size, vector<double>(m_size, 0.0));
+  for (size_t row{0}; row < m_size; row++) {
+    // Where row = col, set element to 1.0
+    identity[row][row] = 1.0;
+  }
+  return identity;
 }
 
 // Matrix printer, if needed for debugging
@@ -84,6 +95,60 @@ inline optional<vector<vector<double>>> transpose_matrix(
   return result;
 }
 
+/* Matrix Addition
+ * Matrices must have the same dimensions
+ */
+inline optional<vector<vector<double>>> add_matrices(
+    const vector<vector<double>>& a_mat, const vector<vector<double>>& b_mat) {
+  // Check for empty matrices
+  if (a_mat.empty() || b_mat.empty()) {
+    printf("One of the matrices are empty\n");
+    return std::nullopt;
+  }
+
+  // Check if A and B are the same dimension
+  if (a_mat.size() != b_mat.size() || a_mat[0].size() != b_mat[0].size()) {
+    printf("Matrices must have the same dimensions\n");
+    return std::nullopt;
+  }
+
+  // Check if both matrices are consistent
+  if (!matrix_consistent(a_mat) || !matrix_consistent(b_mat)) {
+    return std::nullopt;
+  }
+
+  vector<vector<double>> resultant(a_mat.size(),
+                                   vector<double>(a_mat[0].size(), 0.0));
+  for (size_t row{0}; row < a_mat.size(); row++) {
+    for (size_t col{0}; col < a_mat[row].size(); col++) {
+      resultant[row][col] = a_mat[row][col] + b_mat[row][col];
+    }
+  }
+
+  return resultant;
+}
+
+// Multiply Matrix by Scalar
+inline void multiple_matrix_by_scalar(vector<vector<double>>& mat,
+                                      const double& scalar) {
+  // Check for empty matrices
+  if (mat.empty()) {
+    printf("Matrix is empty\n");
+    return;
+  }
+
+  // Check if Matrix is consistent
+  if (!matrix_consistent(mat)) {
+    return;
+  }
+
+  for (auto& row : mat) {
+    for (auto& element : row) {
+      element *= scalar;
+    }
+  }
+}
+
 /* Matrix multiplication
  * If A is an m x n matrix,
  * and B is a n x p matrix,
@@ -95,39 +160,37 @@ inline optional<vector<vector<double>>> transpose_matrix(
  * and A has the same number of columns as B has rows
  */
 inline optional<vector<vector<double>>> multiple_matrices(
-    const vector<vector<double>>& a_matrix,
-    const vector<vector<double>>& b_matrix) {
+    const vector<vector<double>>& a_mat, const vector<vector<double>>& b_mat) {
   // Check for empty matrices
-  if (a_matrix.empty() || b_matrix.empty()) {
+  if (a_mat.empty() || b_mat.empty()) {
     printf("One of the matrices are empty\n");
     return std::nullopt;
   }
 
   // Check if A columns and B rows are equivalent
-  if (a_matrix[0].size() != b_matrix.size()) {
+  if (a_mat[0].size() != b_mat.size()) {
     printf("A columns and B rows are not equivalent\n");
     return std::nullopt;
   }
 
   // Check if both matrices are consistent
-  if (!matrix_consistent(a_matrix) || !matrix_consistent(b_matrix)) {
+  if (!matrix_consistent(a_mat) || !matrix_consistent(b_mat)) {
     return std::nullopt;
   }
 
   // Resultant matrix, m x p
-  vector<vector<double>> result(a_matrix.size(),
-                                vector<double>(b_matrix[0].size()));
+  vector<vector<double>> result(a_mat.size(), vector<double>(b_mat[0].size()));
 
   // Loop through A rows
-  for (size_t row{0}; row < a_matrix.size(); row++) {
+  for (size_t row{0}; row < a_mat.size(); row++) {
     // Loop through B columns
-    for (size_t col{0}; col < b_matrix[0].size(); col++) {
+    for (size_t col{0}; col < b_mat[0].size(); col++) {
       // Prepare summation before loop
       double sum{0};
 
       // Loop through A columns/B rows
-      for (size_t sum_enum{0}; sum_enum < a_matrix[row].size(); sum_enum++) {
-        sum += a_matrix[row][sum_enum] * b_matrix[sum_enum][col];
+      for (size_t sum_enum{0}; sum_enum < a_mat[row].size(); sum_enum++) {
+        sum += a_mat[row][sum_enum] * b_mat[sum_enum][col];
       }
 
       // Apply summation
